@@ -55,12 +55,17 @@ let errorsFound = false;
 // Verificar cada herramienta
 console.log('📋 Verificando herramientas:');
 TOOLS.forEach(tool => {
-  const hasRequiredFields = tool.requiredFields.length === 0 || tool.requiredFields.length > 0;
-  if (hasRequiredFields) {
-    console.log(`   ✅ ${tool.name} - Configuración correcta`);
-  } else {
-    console.log(`   ❌ ${tool.name} - Error en la configuración`);
+  const hasRequiredFields = Array.isArray(tool.requiredFields);
+  const invalidFields = hasRequiredFields
+    ? tool.requiredFields.filter(field => typeof field !== 'string' || field.trim() === '')
+    : [];
+
+  if (!hasRequiredFields || invalidFields.length > 0) {
+    const issue = !hasRequiredFields ? 'no definidos' : invalidFields.join(', ');
+    console.log(`   ❌ ${tool.name} - Campos requeridos inválidos: ${issue}`);
     errorsFound = true;
+  } else {
+    console.log(`   ✅ ${tool.name} - Configuración correcta`);
   }
 });
 

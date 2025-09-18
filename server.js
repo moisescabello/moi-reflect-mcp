@@ -30,6 +30,50 @@ const REFLECT_TOKEN = process.env.REFLECT_TOKEN;
 const GRAPH_ID = process.env.GRAPH_ID;
 const BASE_URL = 'https://reflect.app/api';
 
+const maskIdentifier = (value) => {
+  if (!value) {
+    return '<sin definir>';
+  }
+  const stringValue = String(value);
+  if (stringValue.length <= 4) {
+    return '*'.repeat(stringValue.length);
+  }
+  const masked = '*'.repeat(stringValue.length - 4);
+  return `${masked}${stringValue.slice(-4)}`;
+};
+
+const isPlainObject = (value) => {
+  return value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype;
+};
+
+const sanitizeArgs = (input) => {
+  if (Array.isArray(input)) {
+    return input.map(item => sanitizeArgs(item));
+  }
+  if (isPlainObject(input)) {
+    return Object.entries(input).reduce((acc, [key, value]) => {
+      const lowerKey = key.toLowerCase();
+      if (lowerKey.includes('token') || lowerKey.includes('secret')) {
+        acc[key] = '<redacted>';
+        return acc;
+      }
+      if (typeof value === 'string' && (
+        lowerKey.includes('text') ||
+        lowerKey.includes('content') ||
+        lowerKey.includes('reminder') ||
+        lowerKey.includes('subject') ||
+        lowerKey.includes('description')
+      )) {
+        acc[key] = '<redacted>';
+        return acc;
+      }
+      acc[key] = sanitizeArgs(value);
+      return acc;
+    }, {});
+  }
+  return input;
+};
+
 // Validar configuración
 if (!REFLECT_TOKEN || !GRAPH_ID) {
   console.error('Error: REFLECT_TOKEN y GRAPH_ID son requeridos en el archivo .env');
@@ -37,7 +81,7 @@ if (!REFLECT_TOKEN || !GRAPH_ID) {
 }
 
 console.error('Servidor MCP de Reflect iniciando...');
-console.error(`Graph ID: ${GRAPH_ID}`);
+console.error(`Graph ID: ${maskIdentifier(GRAPH_ID)}`);
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
@@ -220,7 +264,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const args = request.params.arguments || {};
 
   console.error(`Ejecutando herramienta: ${name}`);
-  console.error(`Argumentos:`, JSON.stringify(args));
+  console.error('Argumentos (sanitizados):', JSON.stringify(sanitizeArgs(args)));
 
   try {
     switch (name) {
