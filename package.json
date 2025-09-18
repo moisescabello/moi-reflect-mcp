@@ -1,6 +1,6 @@
 {
   "name": "reflect-mcp",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "MCP server for Reflect note-taking app",
   "main": "server.js",
   "type": "module",

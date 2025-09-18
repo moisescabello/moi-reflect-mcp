@@ -12,6 +12,10 @@ An unofficial MCP (Model Context Protocol) server to interact with [Reflect](htt
 - 🔔 Schedule reminders for future dates
 - 📋 Organize content in specific lists
 
+## 📦 Version
+
+- Current release: `0.5.0` — see `CHANGELOG.md` for details.
+
 ## 📋 Prerequisites
 
 1. **Reflect account** with API access

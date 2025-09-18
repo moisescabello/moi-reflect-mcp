@@ -134,7 +134,7 @@ const api = axios.create({
 const server = new Server(
   {
     name: 'reflect-mcp',
-    version: '1.0.0'
+    version: '0.5.0'
   },
   {
     capabilities: {
