@@ -69,6 +69,8 @@ Edit `.env` and add your credentials:
 ```
 REFLECT_TOKEN=your_actual_token_here
 GRAPH_ID=your_actual_graph_id_here
+# Optional: override the timezone used for daily note helpers (IANA format)
+# REFLECT_TIMEZONE=Europe/Madrid
 ```
 
 ### 4. Configure Claude Desktop
@@ -166,7 +168,7 @@ Due to end-to-end encryption in Reflect:
   - Add links and reminders
 - Backlinks are created with `[[Name]]`
 - Dates must be in `YYYY-MM-DD` format
-- Daily-note tools currently calculate dates in UTC; near local midnight this can target the wrong day. Set the date explicitly if precision matters.
+- Daily-note tools usan tu zona horaria local (o `REFLECT_TIMEZONE` si se establece). Configura la variable si el servidor corre en otra región.
 
 ## 📄 License
 

@@ -5,7 +5,8 @@
       "args": ["/Users/tu-usuario/reflect-mcp/server.js"],
       "env": {
         "REFLECT_TOKEN": "tu_token_de_reflect_aqui",
-        "GRAPH_ID": "tu_graph_id_aqui"
+        "GRAPH_ID": "tu_graph_id_aqui",
+        "REFLECT_TIMEZONE": "Europe/Madrid"
       }
     }
   }

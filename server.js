@@ -11,6 +11,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { resolveTimeZone, createDailyNoteFormatter } from './date-utils.js';
 
 // Modo test: solo verificar que el servidor puede inicializarse
 if (process.argv.includes('--test')) {
@@ -29,6 +30,14 @@ dotenv.config({ path: join(__dirname, '.env') });
 const REFLECT_TOKEN = process.env.REFLECT_TOKEN;
 const GRAPH_ID = process.env.GRAPH_ID;
 const BASE_URL = 'https://reflect.app/api';
+
+const requestedTimeZone = process.env.REFLECT_TIMEZONE;
+const {
+  effectiveTimeZone,
+  isFallback: isTimeZoneFallback,
+  fallbackTimeZone
+} = resolveTimeZone(requestedTimeZone);
+const formatDailyNoteDate = createDailyNoteFormatter(effectiveTimeZone);
 
 const maskIdentifier = (value) => {
   if (!value) {
@@ -104,8 +113,13 @@ if (!REFLECT_TOKEN || !GRAPH_ID) {
   process.exit(1);
 }
 
+if (requestedTimeZone && isTimeZoneFallback) {
+  console.error(`⚠️  REFLECT_TIMEZONE inválido (${requestedTimeZone}). Usando ${fallbackTimeZone}`);
+}
+
 console.error('Servidor MCP de Reflect iniciando...');
 console.error(`Graph ID: ${maskIdentifier(GRAPH_ID)}`);
+console.error(`Zona horaria activa: ${effectiveTimeZone}`);
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
@@ -311,7 +325,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'add_to_today': {
-        const today = new Date().toISOString().split('T')[0];
+        const today = formatDailyNoteDate();
         const response = await api.put(`/graphs/${GRAPH_ID}/daily-notes`, {
           date: today,
           text: args.text,
@@ -330,10 +344,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'add_to_tomorrow': {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowStr = tomorrow.toISOString().split('T')[0];
-        
+        const tomorrowStr = formatDailyNoteDate(new Date(), 1);
+
         const response = await api.put(`/graphs/${GRAPH_ID}/daily-notes`, {
           date: tomorrowStr,
           text: args.text,

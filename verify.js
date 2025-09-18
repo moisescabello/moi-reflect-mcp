@@ -10,6 +10,7 @@ dotenv.config({ path: join(__dirname, '.env') });
 
 const hasReflectToken = Boolean(process.env.REFLECT_TOKEN);
 const hasGraphId = Boolean(process.env.GRAPH_ID);
+const configuredTimeZone = process.env.REFLECT_TIMEZONE;
 
 console.log('🔍 Verificando configuración del servidor MCP de Reflect...\n');
 
@@ -108,6 +109,23 @@ if (hasGraphId) {
 } else {
   console.log('   ❌ GRAPH_ID no encontrado');
   errorsFound = true;
+}
+
+if (configuredTimeZone) {
+  try {
+    new Intl.DateTimeFormat('en-CA', {
+      timeZone: configuredTimeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date());
+    console.log(`   ✅ REFLECT_TIMEZONE válido (${configuredTimeZone})`);
+  } catch (error) {
+    console.log(`   ❌ REFLECT_TIMEZONE inválido: ${configuredTimeZone}`);
+    errorsFound = true;
+  }
+} else {
+  console.log('   ℹ️  REFLECT_TIMEZONE no configurado (se usará la zona horaria del sistema)');
 }
 
 // Verificar archivos necesarios
