@@ -46,23 +46,17 @@ npm install
 
 #### Get your Graph ID:
 
-Option 1: Use curl with your token
+After creating your token, run this helper script included in the project:
+```bash
+npm run setup
+```
+
+This will show you all your graphs and their IDs. Copy the ID of the graph you want to use.
+
+Alternatively, you can use curl:
 ```bash
 curl 'https://reflect.app/api/graphs' \
   -H 'Authorization: Bearer YOUR_TOKEN_HERE'
-```
-
-Option 2: Create a temporary script `get-graph.js`:
-```javascript
-import axios from 'axios';
-
-const token = 'YOUR_TOKEN_HERE';
-
-axios.get('https://reflect.app/api/graphs', {
-  headers: { 'Authorization': `Bearer ${token}` }
-}).then(res => {
-  console.log('Your graphs:', res.data);
-});
 ```
 
 #### Create .env file:
