@@ -172,7 +172,7 @@ Due to end-to-end encryption in Reflect:
   - Add links and reminders
 - Backlinks are created with `[[Name]]`
 - Dates must be in `YYYY-MM-DD` format
-- Daily-note tools usan tu zona horaria local (o `REFLECT_TIMEZONE` si se establece). Configura la variable si el servidor corre en otra región.
+- Daily-note tools use your system timezone (or `REFLECT_TIMEZONE` when set). Configure the variable if the server runs in another region.
 
 ## 📄 License
 

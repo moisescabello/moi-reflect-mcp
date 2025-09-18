@@ -1,31 +1,30 @@
-# Variables de entorno
+# Environment variables
 .env
 .env.local
 
-# Dependencias
+# Dependencies
 node_modules/
 
 # Logs
 *.log
 npm-debug.log*
 
-# Sistema
+# OS artifacts
 .DS_Store
 Thumbs.db
 
-# IDE
+# IDE settings
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Temporales
+# Temporary files
 tmp/
 temp/
 
-# Configuración local de Claude Desktop
+# Local Claude Desktop configuration
 claude_desktop_config.json
 
-# Documentación privada
+# Untracked documentation drafts
 docs/
-AGENTS.md
