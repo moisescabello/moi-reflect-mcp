@@ -15,7 +15,7 @@ An unofficial MCP (Model Context Protocol) server to interact with [Reflect](htt
 ## 📋 Prerequisites
 
 1. **Reflect account** with API access
-2. **Node.js** version 16 or higher
+2. **Node.js** version 18 or higher
 3. **Claude Desktop** installed
 
 ## 🛠️ Installation
@@ -166,6 +166,7 @@ Due to end-to-end encryption in Reflect:
   - Add links and reminders
 - Backlinks are created with `[[Name]]`
 - Dates must be in `YYYY-MM-DD` format
+- Daily-note tools currently calculate dates in UTC; near local midnight this can target the wrong day. Set the date explicitly if precision matters.
 
 ## 📄 License
 

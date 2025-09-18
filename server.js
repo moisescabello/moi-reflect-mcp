@@ -74,6 +74,30 @@ const sanitizeArgs = (input) => {
   return input;
 };
 
+const logToolError = (toolName, error) => {
+  const fallbackMessage = error?.message || 'Error desconocido';
+
+  if (typeof axios.isAxiosError === 'function' && axios.isAxiosError(error)) {
+    if (error.response) {
+      const status = error.response.status;
+      const statusText = error.response.statusText;
+      const apiMessage = error.response.data?.message;
+      console.error(`❌ ${toolName} falló - Reflect respondió ${status}${statusText ? ` ${statusText}` : ''}`.trim());
+      if (apiMessage) {
+        console.error(`   Mensaje de Reflect: ${apiMessage}`);
+      }
+      return;
+    }
+
+    if (error.request) {
+      console.error(`❌ ${toolName} falló - Reflect no respondió (${fallbackMessage})`);
+      return;
+    }
+  }
+
+  console.error(`❌ ${toolName} falló - ${fallbackMessage}`);
+};
+
 // Validar configuración
 if (!REFLECT_TOKEN || !GRAPH_ID) {
   console.error('Error: REFLECT_TOKEN y GRAPH_ID son requeridos en el archivo .env');
@@ -447,8 +471,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         );
     }
   } catch (error) {
-    console.error('Error ejecutando herramienta:', error);
-    
+    if (error instanceof McpError) {
+      throw error;
+    }
+
+    logToolError(name, error);
+
     // Si es un error de Axios
     if (error.response) {
       const status = error.response.status;

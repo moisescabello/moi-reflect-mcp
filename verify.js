@@ -8,9 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '.env') });
 
-// Simular las variables de entorno necesarias
-process.env.REFLECT_TOKEN = process.env.REFLECT_TOKEN || 'test_token';
-process.env.GRAPH_ID = process.env.GRAPH_ID || 'test_graph';
+const hasReflectToken = Boolean(process.env.REFLECT_TOKEN);
+const hasGraphId = Boolean(process.env.GRAPH_ID);
 
 console.log('🔍 Verificando configuración del servidor MCP de Reflect...\n');
 
@@ -97,14 +96,14 @@ try {
 
 // Verificar configuración
 console.log('\n⚙️  Verificando configuración:');
-if (process.env.REFLECT_TOKEN) {
+if (hasReflectToken) {
   console.log('   ✅ REFLECT_TOKEN configurado');
 } else {
   console.log('   ❌ REFLECT_TOKEN no encontrado');
   errorsFound = true;
 }
 
-if (process.env.GRAPH_ID) {
+if (hasGraphId) {
   console.log('   ✅ GRAPH_ID configurado');
 } else {
   console.log('   ❌ GRAPH_ID no encontrado');
