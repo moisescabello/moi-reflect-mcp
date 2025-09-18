@@ -1,0 +1,27 @@
+{
+  "name": "reflect-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Reflect note-taking app",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "node get-graph-id.js",
+    "test": "node server.js --test"
+  },
+  "keywords": ["mcp", "reflect", "notes", "model-context-protocol", "claude"],
+  "author": {
+    "name": "Moisés Cabello",
+    "email": "contacto@moisescabello.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moisescabello/moi-reflect-mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  }
+}

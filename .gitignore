@@ -1,0 +1,30 @@
+# Variables de entorno
+.env
+.env.local
+
+# Dependencias
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporales
+tmp/
+temp/
+
+# Configuración local de Claude Desktop
+claude_desktop_config.json
+
+# Documentación privada
+docs/
